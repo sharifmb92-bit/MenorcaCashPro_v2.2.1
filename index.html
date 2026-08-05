@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Menorca Cash 2.2.1 | medbasha</title>
+    <title>Menorca Cash 2.2.2 | medbasha</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a1a1a">
@@ -54,7 +54,8 @@
         .btn-back { background: var(--card); border: none; color: white; padding: 10px 15px; border-radius: 10px; }
 
         .config-input { width: 100%; background: var(--card); border: 1px solid #444; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 1em; }
-        .btn-save { width: 100%; background: var(--green); color: black; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 10px; }
+        .btn-save { width: 100%; background: var(--green); color: black; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 10px; transition: 0.2s; }
+        .btn-save:active { transform: scale(0.97); }
         
         table { width: 100%; border-collapse: collapse; }
         td { padding: 15px 0; border-bottom: 1px solid #333; font-size: 0.9em; }
@@ -68,6 +69,11 @@
         .card-aplazado-sub { font-size: 0.82em; color: var(--grey); margin-bottom: 6px; }
         .progress-bar-bg { background: #111; border-radius: 6px; height: 8px; width: 100%; overflow: hidden; margin-top: 10px; }
         .progress-bar-fill { background: var(--card-color, var(--purple)); height: 100%; transition: width 0.4s ease; }
+
+        /* FORMULARIO NUEVA COMPRA (COLORIDO) */
+        .card-formulario { background: var(--card); border-radius: 14px; padding: 18px; margin-top: 25px; margin-bottom: 15px; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .card-formulario::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--blue), var(--purple), var(--orange)); border-top-left-radius: 14px; border-top-right-radius: 14px; }
+        .form-header { font-size: 0.9em; font-weight: bold; color: var(--text); margin-bottom: 15px; text-align: center; letter-spacing: 1px; }
 
         .nav-container-rect { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg); padding: 10px 12px 20px 12px; z-index: 90; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
         .btn-rect-lg { background: var(--card); border: none; color: white; padding: 16px 6px; border-radius: 14px; font-size: 0.8em; font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); outline: none; transition: 0.2s; }
@@ -83,7 +89,7 @@
 
     <div id="pantalla-principal">
         <div class="dashboard" id="panel-control" onclick="abrirHistorial()">
-            <div class="app-name">Menorca Cash 2.2.1</div>
+            <div class="app-name">Menorca Cash 2.2.2</div>
             <div class="balance" id="total">0,00 €</div>
             <div class="sub-label" id="estado-texto">DISPONIBLE VIRTUAL</div>
         </div>
@@ -140,11 +146,11 @@
         </div>
 
         <div id="contenedor-aplazados"></div>
-
-        <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
         
-        <b style="font-size: 0.85em; color: var(--purple);">NUEVA COMPRA APLAZADA</b>
-        <div style="margin-top: 10px;">
+        <!-- NUEVA TARJETA FORMULARIO APLAZADOS -->
+        <div class="card-formulario">
+            <div class="form-header">✨ NUEVA COMPRA APLAZADA</div>
+            
             <label style="font-size: 0.7em; color: var(--grey);">LUGAR (Ej: Amazon, Carrefour)</label>
             <input type="text" id="apl-lugar" class="config-input" placeholder="Lugar de compra">
 
@@ -168,8 +174,9 @@
             <label style="font-size: 0.7em; color: var(--grey);">CUOTA CALCULADA (€/mes)</label>
             <input type="number" id="apl-cuota" class="config-input" placeholder="Se calcula sola...">
 
-            <button class="btn-save" style="background: var(--purple); color: white;" onclick="guardarAplazado()">📌 GUARDAR APLAZADO</button>
+            <button class="btn-save" style="background: linear-gradient(90deg, var(--purple), var(--blue)); color: white; border: none;" onclick="guardarAplazado()">📌 GUARDAR APLAZADO</button>
         </div>
+        
         <div style="height: 100px;"></div>
     </div>
 
@@ -320,7 +327,6 @@
                 
                 if (pendiente > 0) sumaCuotasMes += item.cuota;
 
-                // Asignación de color individual por tarjeta
                 const colorCard = item.color || coloresTarjetas[index % coloresTarjetas.length];
 
                 const card = document.createElement('div');
